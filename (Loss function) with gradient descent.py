@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[3]:
+
+
+from sklearn.datasets import make_classification
+import numpy as np
+X,y = make_classification(n_features=2,n_classes=2,n_samples=100,n_informative=1,n_redundant=0,
+                          n_clusters_per_class=1,random_state=41,hypercube=False,class_sep=15)
+
+
+# In[6]:
+
+
+import matplotlib.pyplot as plt
+plt.figure(figsize=(10,6))
+plt.scatter(X[:,0],X[:,1],c=y,cmap="winter",s=100)
+
+
+# In[7]:
+
+
+def perceptron(X,y):
+    w1=w2=b=1 #initial values w1 w2 b 
+    learning_rate=0.1
+    
+    for j in range(1000):
+         
+        for i in range(X.shape[0]):
+            #loss function formula
+            z = w1*X[i][0] + w2*X[i][1] + b # fxi main
+            
+            if z*y[i] < 0:
+                w1 =w1+learning_rate*y[i]*X[i][0]
+                w2 = w2+learning_rate*y[i]*X[i][1]
+                b = b+learning_rate*y[i]
+                
+    return w1,w2,b
+
+
+# In[8]:
+
+
+w1,w2,b = perceptron(X,y)
+
+
+# In[10]:
+
+
+m = (w1/w2)
+c = (b/w2)
+
+
+# In[13]:
+
+
+# to plot graph
+x_input = np.linspace(-3,3,100)
+y_input = m*x_input + c
+
+plt.figure(figsize=(10,6))
+plt.plot(x_input,y_input,color="red",linewidth=3)
+plt.scatter(X[:,0],X[:,1],c=y,cmap="winter",s=100)
+plt.ylim(-3,2)
+
+#loss function 
+
